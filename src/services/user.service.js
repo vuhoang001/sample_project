@@ -145,7 +145,7 @@ class UserService {
 
   handleOTP = async ({ email }) => {
     const holderAccount = await userModel.findOne({ email: email });
-    if (!holderAccount) throw new AuthFailureError("Invalid email");
+    if (!holderAccount) throw new AuthFailureError("Email is not existed!");
 
     const resetToken = crypto.randomBytes(64).toString("hex");
 
@@ -158,7 +158,7 @@ class UserService {
 
     if (!forgetPasswordObject) throw new BadRequestError("Cant create OTP");
 
-    const link = `${process.env.URL_SERVER}/passwordReset?token=${resetToken}&email=${email}`;
+    const link = `${process.env.URL_SERVER_CLIENT}/auth/passwordReset?token=${resetToken}&email=${email}`;
     sendMail(email, link);
 
     return link;
